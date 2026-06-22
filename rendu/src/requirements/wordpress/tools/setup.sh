@@ -2,7 +2,7 @@
 
 set -e
 
-until mysqladim ping -h mariadb --slient; do
+until mysqladmin ping -h mariadb --silent; do
 	sleep 2
 done
 
@@ -15,7 +15,7 @@ if [ ! -f "wp-config.php" ]; then
 		--dbhost="mariadb:3306" \
 		--allow-root
 	wp core install \
-		--url="${DOMAIN_NAME}" \
+		--url="https://${DOMAIN_NAME}" \
 		--title="inception" \
 		--admin_user="${WP_ADMIN_USER}" \
 		--admin_password="$(cat /run/secrets/wp_admin_password)" \
@@ -30,6 +30,6 @@ if [ ! -f "wp-config.php" ]; then
 fi
 
 
-chown -R www-data::www-data /var/www/wordpress
+chown -R www-data:www-data /var/www/wordpress
 
-exec /usr/sbin/php-fpm7.4 -F
+exec "$@"
