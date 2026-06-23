@@ -1,45 +1,40 @@
-version: "5.1.4"
 services:
 
   mariadb:
     build:
-    container_name:
-    image:
+    container_name: mariadb
+    image: mariadb
     restart:
     volumes:
     networks:
-    env_file:
-    environment:
+    env_file: ../.env
     secrets:
-    healthcheck:
-    init:
 
   wordpress:
     build:
-    container_name:
-    image:
+    container_name: wordpress
+    image: wordpress
     restart:
     volumes:
     networks:
     depends_on:
-    env_file:
-    environment:
+      - mariadb
+    env_file: ../.env
     secrets:
-    healthcheck:
 
   nginx:
     build:
-    container_name:
-    image:
+    container_name: nginx
+    image: nginx
     restart:
     ports:
+      - "443:443"
     volumes:
     networks:
     depends_on:
-    env_file:
-    environment:
+      - wordpress
+    env_file: ../.env
     secrets:
-    healthcheck:
 
 
 networks:
@@ -48,16 +43,28 @@ networks:
 
 volumes:
   wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/sboukiou/data/wordpress"
+      o: bind
   mariadb_data:
-  dirver:
-  dirver_opts:
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/sboukiou/data/mariadb"
+      o: bind
 
 
 
 
 secrets:
   db_password:
+    file:
   db_root_password:
-  credentials:
-  file:
+    file:
+  wp_password:
+    file:
+  wp_admin_password:
+    file:
 
