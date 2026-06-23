@@ -1,0 +1,63 @@
+version: "5.1.4"
+services:
+
+  mariadb:
+    build:
+    container_name:
+    image:
+    restart:
+    volumes:
+    networks:
+    env_file:
+    environment:
+    secrets:
+    healthcheck:
+    init:
+
+  wordpress:
+    build:
+    container_name:
+    image:
+    restart:
+    volumes:
+    networks:
+    depends_on:
+    env_file:
+    environment:
+    secrets:
+    healthcheck:
+
+  nginx:
+    build:
+    container_name:
+    image:
+    restart:
+    ports:
+    volumes:
+    networks:
+    depends_on:
+    env_file:
+    environment:
+    secrets:
+    healthcheck:
+
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  wordpress_data:
+  mariadb_data:
+  dirver:
+  dirver_opts:
+
+
+
+
+secrets:
+  db_password:
+  db_root_password:
+  credentials:
+  file:
+
