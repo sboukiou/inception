@@ -6,6 +6,14 @@ until mysqladmin ping -h mariadb --silent; do
 	sleep 2
 done
 
+# Checking if the name has admin keyword
+
+
+if echo "${WP_ADMIN_USER}" | grep -iq "admin"; then
+	echo "ERROR: WP_ADMIN_USER must not contain 'admin' or 'administrator'."
+	exit 1
+fi
+
 if [ ! -f "wp-config.php" ]; then
 	wp core download --allow-root
 	wp config create \
@@ -24,7 +32,7 @@ if [ ! -f "wp-config.php" ]; then
 		--allow-root
 	wp user create \
 		"${WP_USER}" "${WP_EMAIL}" \
-		--user-pass="$(cat /run/secrets/wp_password)" \
+		--user_pass="$(cat /run/secrets/wp_password)" \
 		--role=author \
 		--allow-root
 fi

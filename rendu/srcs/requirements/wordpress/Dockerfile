@@ -7,6 +7,7 @@ RUN apt-get install -y --no-install-recommends php7.4-fpm \
 	mariadb-client \
 	ca-certificates
 
+WORKDIR /var/www/wordpress
 RUN rm -rf /var/lib/apt/lists/*	
 RUN mkdir -p /run/php
 
@@ -14,10 +15,8 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 	&&  chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-WORKDIR /var/www/wordpress
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY tools/setup.sh /usr/local/bin/setup.sh
-RUN chown -R www-data:www-data /var/www/wordpress
 RUN chmod +x /usr/local/bin/setup.sh
 
 EXPOSE 9000
