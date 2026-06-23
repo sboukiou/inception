@@ -1,40 +1,58 @@
 services:
 
   mariadb:
-    build:
+    build: ./requirements/mariadb
     container_name: mariadb
     image: mariadb
-    restart:
+    restart: on-failure
     volumes:
+      - mariadb_data:/var/lib/mysql
     networks:
-    env_file: ../.env
-    secrets:
+      - inception
+    env_file: .env
+    secrets: 
+      - db_password
+      - db_root_password
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -u $$MYSQL_USER -p$$(cat /run/secrets/db_password) -e 'USE $$MYSQL_DATABASE;' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
 
   wordpress:
-    build:
+    build: ./requirements/wordpress
     container_name: wordpress
     image: wordpress
-    restart:
+    restart: on-failure
     volumes:
+      - wordpress_data:/var/www/wordpress
     networks:
+      - inception
     depends_on:
-      - mariadb
-    env_file: ../.env
+      mariadb:
+        condition: service_healthy
+    env_file: .env
     secrets:
+      - wp_password
+      - wp_admin_password
+      - db_password
 
   nginx:
-    build:
+    build: ./requirements/nginx
     container_name: nginx
     image: nginx
-    restart:
+    restart: on-failure
     ports:
       - "443:443"
     volumes:
+      - wordpress_data:/var/www/wordpress
     networks:
+      - inception
     depends_on:
       - wordpress
-    env_file: ../.env
-    secrets:
+    env_file: .env
 
 
 networks:
@@ -42,17 +60,17 @@ networks:
     driver: bridge
 
 volumes:
-  wordpress_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: "/home/sboukiou/data/wordpress"
-      o: bind
   mariadb_data:
     driver: local
     driver_opts:
       type: none
       device: "/home/sboukiou/data/mariadb"
+      o: bind
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/sboukiou/data/wordpress"
       o: bind
 
 
