@@ -60,11 +60,10 @@ volumes:
 
 secrets:
   db_password:
-    file:
+    file: ../secrets/db_password.txt
   db_root_password:
-    file:
+    file: ../secrets/db_root_password.txt
   wp_password:
-    file:
+    file: ../secrets/wp_password.txt
   wp_admin_password:
-    file:
-
+    file: ../secrets/wp_admin_password.txt
