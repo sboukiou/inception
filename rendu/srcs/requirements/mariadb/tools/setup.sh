@@ -13,11 +13,11 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 		sleep 1
 	done
 
-	mysql -e "create database if not exists \`${MYSQL_DATABASE}\`;"
-	mysql -e "create user if not exists \`${MYSQL_USER}\`@'%' identified by '$(cat /run/secrets/db_password)';"
-	mysql -e "grant all privileges on \`${MYSQL_DATABASE}\`.* to \`${MYSQL_USER}\`@'%';"
-	mysql -e "alter user 'root'@'localhost' identified by '$(cat /run/secrets/db_root_password)';"
-	mysql -e "flush privileges;"
+	mysql -u root -e "create database if not exists \`${MYSQL_DATABASE}\`;"
+	mysql -u root -e "create user if not exists \`${MYSQL_USER}\`@'%' identified by '$(cat /run/secrets/db_password)';"
+	mysql -u root -e "grant all privileges on \`${MYSQL_DATABASE}\`.* to \`${MYSQL_USER}\`@'%';"
+	mysql -u root -e "alter user 'root'@'localhost' identified by '$(cat /run/secrets/db_root_password)';"
+	mysql -u root -e "flush privileges;"
 
 	mysqladmin -u root -p"$(cat /run/secrets/db_root_password)" shutdown
 fi

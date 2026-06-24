@@ -3,6 +3,8 @@ FROM debian:bullseye
 RUN apt-get update -yqq && apt-get upgrade -yqq &&\ 
 	apt-get install -y --no-install-recommends mariadb-server && rm -rf /var/lib/apt/lists/*
 
+RUN rm -rf /var/lib/mysql/*
+
 EXPOSE 3306
 
 LABEL version="1.0"
