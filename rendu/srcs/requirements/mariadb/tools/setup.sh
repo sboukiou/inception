@@ -17,7 +17,6 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 	mysql -u root -e "create user if not exists \`${MYSQL_USER}\`@'%' identified by '$(cat /run/secrets/db_password)';"
 	mysql -u root -e "grant all privileges on \`${MYSQL_DATABASE}\`.* to \`${MYSQL_USER}\`@'%';"
 	mysql -u root -e "alter user 'root'@'localhost' identified by '$(cat /run/secrets/db_root_password)';"
-	mysql -u root -e "flush privileges;"
 
 	mysqladmin -u root -p"$(cat /run/secrets/db_root_password)" shutdown
 fi
