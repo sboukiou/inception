@@ -1,7 +1,8 @@
 services:
-
   mariadb:
-    build: ./requirements/mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     container_name: mariadb
     image: mariadb
     restart: on-failure
@@ -13,16 +14,10 @@ services:
     secrets: 
       - db_password
       - db_root_password
-    healthcheck:
-      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -u $$MYSQL_USER -p$$(cat /run/secrets/db_password) -e 'USE $$MYSQL_DATABASE;' || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-
-
   wordpress:
-    build: ./requirements/wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     container_name: wordpress
     image: wordpress
     restart: on-failure
@@ -31,16 +26,16 @@ services:
     networks:
       - inception
     depends_on:
-      mariadb:
-        condition: service_healthy
+      - mariadb
     env_file: .env
     secrets:
       - wp_password
       - wp_admin_password
       - db_password
-
   nginx:
-    build: ./requirements/nginx
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     container_name: nginx
     image: nginx
     restart: on-failure
