@@ -1,17 +1,20 @@
-all:
-	echo $@
+COMPOSE=docker compose -f srcs/docker-compose.yml --env-file ./srcs/.env
 
-build:
-	echo $@
+
+build: all
+	$(COMPOSE) build
+
+all:
+	$(COMPOSE) up
 	
 down:
-	echo $@
+	$(COMPOSE) down -v
 
-clean:
-	echo $@
+clean: down
+	$(COMPOSE) rm mariadb nginx wordpress
 
-fclean:
-	echo $@
+fclean: clean
+	sudo rm -rf /home/sboukiou/data/mariadb/*
+	sudo rm -rf /home/sboukiou/data/wordpress/*
 
-re:
-	echo $@
+re: fclean all
