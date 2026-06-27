@@ -7,7 +7,7 @@ chown mysql:mysql /run/mysqld
 if [ ! -d /var/lib/mysql/mysql ]; then
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-	mysqld_safe --datadir=/var/lib/mysql &
+	mariadb --datadir=/var/lib/mysql --user=mysql &
 
 	until mysqladmin ping > /dev/null 2>&1; do
 		sleep 1
@@ -21,4 +21,4 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 	mysqladmin -u root -p"$(cat /run/secrets/db_root_password)" shutdown
 fi
 
-exec mysqld_safe --datadir=/var/lib/mysql
+exec mariadbd --datadir=/var/lib/mysql --user=mysql
