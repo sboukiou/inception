@@ -48,6 +48,20 @@ services:
     depends_on:
       - wordpress
     env_file: .env
+  adminer:
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    container_name: adminer
+    image: adminer
+    restart: on-failure
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    env_file: .env
+    secrets:
+      - adminer_password
 
 
 networks:
@@ -80,3 +94,5 @@ secrets:
     file: ../secrets/wp_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  adminer_password:
+    file: ../secrets/adminer_password.txt

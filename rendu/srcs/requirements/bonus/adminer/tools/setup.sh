@@ -8,10 +8,10 @@ if [ ! -f /var/www/html/index.php ]; then
 	wget "https://www.adminer.org/latest.php" -O /var/www/html/index.php
 fi
 
-if [ -f /run/secrets/adminer_password.txt ]; then
+if [ -f /run/secrets/adminer_password ]; then
 	echo "[INFO]: Generating the password for adminer ..."
 	mkdir -p /etc/adminer
-	htpasswd -B -c /etc/adminer/.htpasswd "$(USER)"  "$(cat /run/secrets/adminer_password.txt)"
+	htpasswd -b -B -c /etc/adminer/.htpasswd "${USER}" "$(cat /run/secrets/adminer_password)"
 else
 	echo "[ERROR]: Password file for adminer (/run/secrets/adminer_password.txt) was not found!"
 	exit 1
