@@ -62,6 +62,18 @@ services:
     env_file: .env
     secrets:
       - adminer_password
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    container_name: redis
+    image: redis
+    restart: on-failure
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    env_file: .env
 
 
 networks:

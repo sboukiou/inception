@@ -35,9 +35,18 @@ if [ ! -f "wp-config.php" ]; then
 		--user_pass="$(cat /run/secrets/wp_password)" \
 		--role=author \
 		--allow-root
+	echo "WordPress: Configuring Redis cache..."
+	sed -i "/table_prefix = 'wp_';/a \
+		define('WP_REDIS_HOST', 'redis');\n\
+		define('WP_REDIS_PORT', 6379);\n\
+		define('WP_REDIS_DATABASE', 0);" wp-config.php
+
+	wp plugin install redis-cache --activate --allow-root
+	wp redis enable --allow-root
+
 fi
 
-
+#chown -R www-data:www-data /var/www/html
 chown -R www-data:www-data /var/www/wordpress
 
 exec "$@"

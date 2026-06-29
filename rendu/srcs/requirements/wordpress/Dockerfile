@@ -5,6 +5,7 @@ RUN apt-get install -y --no-install-recommends php7.4-fpm \
 	curl \
 	php7.4-mysql \
 	mariadb-client \
+	php7.4-redis \
 	ca-certificates
 
 WORKDIR /var/www/wordpress
