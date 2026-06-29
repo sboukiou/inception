@@ -93,6 +93,17 @@ services:
     env_file: .env
     secrets:
       - ftp_password
+  cohle:
+    build:
+      context: ./requirements/bonus/cohle
+      dockerfile: Dockerfile
+    container_name: cohle
+    image: cohle
+    restart: on-failure
+    networks:
+      - inception
+    ports:
+      - "8081:8081"
 
 
 networks:

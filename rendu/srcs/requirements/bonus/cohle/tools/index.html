@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Is A Flat Circle</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,500;1,400&family=Courier+Prime&display=swap');
+
+  :root{
+    --bg: #0a0c0a;
+    --teal: #3a4a44;
+    --amber: #b8863f;
+    --bone: #e8e2d4;
+    --rust: #6e3328;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html, body{
+    background: var(--bg);
+    color: var(--bone);
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body{
+    font-family: 'Courier Prime', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* faint atmospheric haze */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(184,134,63,0.06), transparent 60%),
+      radial-gradient(ellipse at 50% 90%, rgba(58,74,68,0.10), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* faint grain */
+  body::after{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.035'/></svg>");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .stage{
+    position: relative;
+    width: min(90vw, 760px);
+    aspect-ratio: 1 / 1;
+    max-width: 760px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  /* the signature element: a slow rotating ring of ticks, a clock with no hands */
+  .ring{
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    animation: spin 180s linear infinite;
+  }
+
+  .ring .tick{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: rgba(184,134,63,0.35);
+    transform-origin: top center;
+  }
+
+  .ring .tick.major{
+    height: 26px;
+    background: rgba(184,134,63,0.55);
+  }
+
+  .ring-outline{
+    position: absolute;
+    inset: 6%;
+    border: 1px solid rgba(232,226,212,0.08);
+    border-radius: 50%;
+  }
+
+  @keyframes spin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .ring{ animation: none; }
+  }
+
+  .content{
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+
+  .eyebrow{
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--teal);
+    filter: brightness(1.8);
+    margin-bottom: 2.2rem;
+  }
+
+  .quote{
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.8rem, 5vw, 3.4rem);
+    line-height: 1.35;
+    color: var(--bone);
+    text-shadow: 0 0 30px rgba(184,134,63,0.08);
+  }
+
+  .quote em{
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .rule{
+    width: 40px;
+    height: 1px;
+    background: var(--rust);
+    margin: 2.4rem auto;
+    opacity: 0.6;
+  }
+
+  .case{
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: rgba(232,226,212,0.35);
+    text-transform: uppercase;
+  }
+
+  footer{
+    position: fixed;
+    bottom: 1.4rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: rgba(232,226,212,0.2);
+    text-transform: uppercase;
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="ring" id="ring"></div>
+    <div class="ring-outline"></div>
+
+    <div class="content">
+      <div class="eyebrow">Carcosa &mdash; Recurrence Log</div>
+      <p class="quote">
+        &ldquo;Time is a flat circle,<br>
+        just like the one <em>you</em> are in.&rdquo;
+      </p>
+      <div class="rule"></div>
+      <p class="case">Everything we've ever done, we will do again</p>
+    </div>
+  </div>
+
+  <footer>This has happened before. It will happen again.</footer>
+
+  <script>
+    // build the tick ring procedurally, one major tick every 30deg, minor every 6deg
+    const ring = document.getElementById('ring');
+    const total = 60;
+    for(let i = 0; i < total; i++){
+      const tick = document.createElement('div');
+      const angle = (360 / total) * i;
+      const isMajor = i % 5 === 0;
+      tick.className = 'tick' + (isMajor ? ' major' : '');
+      tick.style.transform = `rotate(${angle}deg)`;
+      ring.appendChild(tick);
+    }
+  </script>
+
+</body>
+</html>
