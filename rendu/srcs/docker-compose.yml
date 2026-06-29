@@ -74,6 +74,25 @@ services:
     depends_on:
       - mariadb
     env_file: .env
+  vsftpd:
+    build:
+      context: ./requirements/bonus/vsftpd
+      dockerfile: Dockerfile
+    container_name: vsftpd
+    image: vsftpd
+    restart: on-failure
+    networks:
+      - inception
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    depends_on:
+      - mariadb
+    env_file: .env
+    secrets:
+      - ftp_password
 
 
 networks:
@@ -108,3 +127,5 @@ secrets:
     file: ../secrets/wp_admin_password.txt
   adminer_password:
     file: ../secrets/adminer_password.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt
