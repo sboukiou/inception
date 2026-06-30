@@ -104,6 +104,18 @@ services:
       - inception
     ports:
       - "8081:8081"
+  portainer:
+    build: requirements/bonus/portainer
+    container_name: portainer
+    image: portainer
+    restart: always
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/var/lib/portainer
+    networks:
+      - inception
 
 
 networks:
@@ -123,6 +135,12 @@ volumes:
       type: none
       device: "/home/sboukiou/data/wordpress"
       o: bind
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/sboukiou/data/portainer'
 
 
 
