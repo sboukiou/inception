@@ -1,19 +1,17 @@
 COMPOSE=docker compose -f srcs/docker-compose.yml --env-file ./srcs/.env
 
 
-build: all
+build:
 	$(COMPOSE) build
-
-all:
-	$(COMPOSE) up --build
-	
-up:
+up: build
 	$(COMPOSE) up
 down:
-	$(COMPOSE) down -v
+	$(COMPOSE) down
+
+all:  up
 
 clean: down
-	$(COMPOSE) rm mariadb nginx wordpress
+	$(COMPOSE) rm -v
 
 fclean: clean
 	sudo rm -rf /home/sboukiou/data/mariadb/*
