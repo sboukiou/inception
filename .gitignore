@@ -1,5 +1,5 @@
-rendu/secrets/*
-rendu/srcs/.env
+secrets/*
+srcs/.env
 .DS_Store
 *.swp
 learning/*
