@@ -9,7 +9,7 @@
 * **A web server (Nginx)**
 
 ***As the project Subject States, This has to be done using Docker and Docker-Compose?***
-**But What is docker ? And what is Docker compose??** \
+**But What is docker ? And what is Docker compose??**
 * ***If you have the time, I strongly recommend you check this book:*** **[The docker Book](https://github.com/AngelSanchezT/books-1/blob/master/docker/the-docker-book.pdf)**
 * ***Otherwise, You can check the docker docs, articles online, courses ... Here are few:***
 * ***[Docker Documentation](https://docs.docker.com/)***
